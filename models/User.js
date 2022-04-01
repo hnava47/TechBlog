@@ -2,7 +2,7 @@ const { Model, DataTypes, UUIDV4 } = require('sequelize');
 const bcrypt = require('bcrypt');
 const sequelize = require('../config');
 
-class User extends Model {}
+class User extends Model {};
 
 User.init(
     {
