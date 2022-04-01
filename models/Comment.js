@@ -17,6 +17,13 @@ Comment.init(
                 key: 'id'
             }
         },
+        blogId: {
+            type: DataTypes.UUID,
+            references: {
+                model: 'blog',
+                key: 'id'
+            }
+        },
         comment: {
             type: DataTypes.String,
             allowNull: false
