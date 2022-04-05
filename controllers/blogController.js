@@ -66,7 +66,7 @@ module.exports = {
         }
     },
     createBlog: async (req, res) => {
-        const { content } = req.body;
+        const { content, title } = req.body;
 
         if (!content) {
             return res.status(401).json({ error: 'Must include a message' });
@@ -75,6 +75,7 @@ module.exports = {
         try {
             const blogData = await Blog.create({
                 creatorId: req.session.user.id,
+                title,
                 content
             });
 
@@ -91,15 +92,18 @@ module.exports = {
         }
     },
     updateBlog: async (req, res) => {
-        const { content } = req.body;
+        const { title, content } = req.body;
 
         try {
             await Blog.update(
-                { content },
-                { where: { id: req.params.postId } }
+                {
+                    content,
+                    title
+                },
+                { where: { id: req.params.blogId } }
             );
 
-            const updatedBlog = await Blog.findByPk(req.params.postId);
+            const updatedBlog = await Blog.findByPk(req.params.blogId);
 
             res.json(updatedBlog);
         } catch (error) {
@@ -107,11 +111,13 @@ module.exports = {
         }
     },
     deleteBlog: async (req, res) => {
+        const { blogId } = req.params;
+
         try {
-            const deleteBlog = await Blog.findByPk(req.params.postId);
+            const deleteBlog = await Blog.findByPk(blogId);
 
             await Blog.destroy({
-                where: { id: req.params.postId }
+                where: { id: blogId }
             });
 
             res.json(deleteBlog);

@@ -1,0 +1,38 @@
+body {
+    background-color: #f5f5f5;
+}
+
+header {
+    background-color: #f5f5f5;
+}
+
+#fbBtn {
+    background-color: #4267B2;
+    color: white;
+}
+
+.hr {
+    border-bottom: 1px solid black;
+}
+
+.dropdown-item {
+    cursor: pointer;
+}
+
+.custom-alert {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
+
+.scrollarea {
+    overflow-y: auto;
+}
+
+.comment-xsm {
+    font-size: x-small;
+}
+
+.comment-sm{
+    font-size: small;
+}

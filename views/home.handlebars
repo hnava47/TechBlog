@@ -1,49 +1,57 @@
 <main>
     {{> loggedInNavBar}}
-    <div class="d-flex flex-column align-items-center flex-shrink-0 bg-white scrollarea">
-        <div class="card mb-2">
-            <div class="card-body">
-                <h1 class="card-title">Card title</h1>
-                <h2 class="card-subtitle mb-2 text-muted">Card subtitle</h2>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
+    <div class="container-fluid pb-3 px-4">
+        {{> alertMessages}}
+        {{!-- Post Modal --}}
+        <div class="modal fade" id="blogModal" tabindex="-1" aria-labelledby="blogModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="blogModalLabel">Create Blog</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group mb-2">
+                            <input id="blogTitle" type="text" class="form-control" placeholder="title" aria-label="Blog title" aria-describedby="basic-addon2">
+                        </div>
+                        <div class="input-group">
+                            <textarea id="blogContent" class="form-control" aria-label="With textarea" placeholder="What's on your mind?"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="blogBtn" type="button" class="btn btn-primary px-4">Post</button>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="card mb-2">
-            <div class="card-body">
-                <h1 class="card-title">Card title</h1>
-                <h2 class="card-subtitle mb-2 text-muted">Card subtitle</h2>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
+        {{!-- Update Modal --}}
+        <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateModalLabel">Update Post</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group">
+                            <textarea id="updateMessage" class="form-control" aria-label="With textarea"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="updateBtn" type="button" class="btn btn-primary px-4">Update</button>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="card mb-2">
-            <div class="card-body">
-                <h1 class="card-title">Card title</h1>
-                <h2 class="card-subtitle mb-2 text-muted">Card subtitle</h2>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
-            </div>
-        </div>
-        <div class="card mb-2">
-            <div class="card-body">
-                <h1 class="card-title">Card title</h1>
-                <h2 class="card-subtitle mb-2 text-muted">Card subtitle</h2>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
-            </div>
-        </div>
-        <div class="card mb-2">
-            <div class="card-body">
-                <h1 class="card-title">Card title</h1>
-                <h2 class="card-subtitle mb-2 text-muted">Card subtitle</h2>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
+        <div class="row row-cols-2 justify-content-center">
+            <div class="bg-light border rounded-3 pt-3">
+                <!-- Button trigger modal -->
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#blogModal">
+                        <i class="bi bi-plus-lg"></i>
+                    </button>
+                </div>
+                {{> blogs}}
             </div>
         </div>
     </div>

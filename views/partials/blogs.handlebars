@@ -1,0 +1,68 @@
+<div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white">
+    <div class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+        <span class="fs-5 fw-semibold">News feed</span>
+    </div>
+    <div id='newsFeed' class="list-group list-group-flush border-bottom scrollarea">
+        {{#each allBlogs as |blog|}}
+            <a id={{blog.id}} class="list-group-item list-group-item-action py-3 lh-tight">
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">
+                        {{blog.user.firstName}} {{blog.user.lastName}}
+                    </strong>
+                    {{#if (equals blog.creatorId ../user.id)}}
+                        <div class="flex-shrink-0 dropdown">
+                            <i class="bi bi-three-dots" data-bs-toggle="dropdown"></i>
+                            <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2" data-id={{blog.id}}>
+                                <li class="dropdown-item editBlog" data-bs-toggle="modal" data-bs-target="#updateModal">Edit</li>
+                                <li class="dropdown-item deleteBlog">Delete</li>
+                            </ul>
+                        </div>
+                    {{/if}}
+                </div>
+                <small class="text-muted">
+                    {{dateFormat blog.updatedAt "MMMM DD"}} at {{dateFormat blog.updatedAt "hh:mm A"}}
+                </small>
+                <div id="content-{{blog.id}}" class="col-10 mt-3 mb-1">
+                    {{blog.content}}
+                </div>
+                <small>
+                    <i class="bi bi-chat" data-bs-toggle="collapse" href="#collapse-{{blog.id}}" role="button" aria-expanded="false" aria-controls="collapseExample"></i>&nbsp;<span>{{post.comments.length}}</span>
+                </small>
+                <div class="collapse mt-2 mb-2 mx-2" id="collapse-{{blog.id}}">
+                    {{#each blog.comments as |comment|}}
+                        <div id={{comment.id}} class="card card-body">
+                            <div class="d-flex w-100 align-items-center justify-content-between">
+                                <strong class="comment-sm">
+                                    {{comment.user.firstName}}&nbsp;{{comment.user.lastName}}
+                                </strong>
+                                {{#if (equals comment.creatorId ../../user.id)}}
+                                    <div class="flex-shrink-0 dropdown">
+                                        <i class="bi bi-three-dots" data-bs-toggle="dropdown"></i>
+                                        <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2" data-commentId={{comment.id}}>
+                                            <li class="dropdown-item editComment" data-bs-toggle="modal" data-bs-target="#updateCommentModal">Edit</li>
+                                            <li class="dropdown-item deleteComment">Delete</li>
+                                        </ul>
+                                    </div>
+                                {{/if}}
+                            </div>
+                            <small class="text-muted comment-xsm">
+                                {{dateFormat comment.updatedAt "MMMM DD"}} at {{dateFormat comment.updatedAt "hh:mm A"}}
+                            </small>
+                            <div class="mt-2 comment-sm">
+                                {{comment.comment}}
+                            </div>
+                        </div>
+                    {{/each}}
+                    <div class="input-group mt-3 mb-2">
+                        <i class="bi bi-person-circle" style="font-size: 2em;"></i>
+                        &nbsp;&nbsp;
+                        <input id="input-{{blog.id}}" type="text" class="form-control rounded-pill" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Add a comment...">
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button class="btn btn-primary postCommentBtn" type="button" data-id={{blog.id}}>Post</button>
+                    </div>
+                </div>
+            </a>
+        {{/each}}
+    </div>
+</div>

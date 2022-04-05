@@ -23,14 +23,15 @@ module.exports = {
         }
     },
     updateComment: async (req, res) => {
+        const { commentId } = req.params;
         const { comment } = req.body;
         try {
             await Comment.update(
                 { comment },
-                { where: { id: req.params.commentId } }
+                { where: { id: commentId } }
             );
 
-            const patchComment = await Comment.findByPk(req.params.commentId);
+            const patchComment = await Comment.findByPk(commentId);
 
             res.json(patchComment);
         } catch (error) {
@@ -38,11 +39,13 @@ module.exports = {
         }
     },
     deleteComment: async (req, res) => {
+        const { commentId } = req.params;
+
         try {
-            const delComment = await Comment.findByPk(req.params.commentId);
+            const delComment = await Comment.findByPk(commentId);
 
             await Comment.destroy({
-                where:{ id: req.params.commentId }
+                where: { id: commentId }
             });
 
             res.json(delComment);
