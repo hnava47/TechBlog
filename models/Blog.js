@@ -18,11 +18,11 @@ Blog.init(
             }
         },
         title: {
-            type: DataTypes.String,
+            type: DataTypes.STRING,
             allowNull: false
         },
         content: {
-            type: DataTypes.String,
+            type: DataTypes.STRING,
             allowNull: false
         }
     },

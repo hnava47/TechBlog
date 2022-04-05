@@ -2,6 +2,9 @@ const bcrypt = require('bcryptjs');
 const { User } = require('../models');
 
 module.exports = {
+    homePage: (req, res) => {
+        res.redirect('/login')
+    },
     login: async (req, res) => {
         const { email, password } = req.body;
 

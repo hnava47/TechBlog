@@ -25,7 +25,7 @@ Comment.init(
             }
         },
         comment: {
-            type: DataTypes.String,
+            type: DataTypes.STRING,
             allowNull: false
         }
     },
