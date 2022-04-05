@@ -5,6 +5,7 @@ const exphbs = require('express-handlebars');
 const session = require('express-session');
 const routes = require('./routes');
 const sequelize = require('./config');
+const helpers = require('./utils/hbsHelper');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -15,10 +16,11 @@ const sessionSettings = {
     saveUninitialized: false
 };
 
-const hbs = exphbs.create({});
+const hbs = exphbs.create({ helpers });
 
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
+hbs.handlebars.registerHelper('dateFormat', require('handlebars-dateformat'));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

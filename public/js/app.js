@@ -2,6 +2,7 @@ $(document).ready(function() {
     const $logoutBtn = $('#logoutBtn');
     const $blogModal = $('#blogtModal');
     const $newsFeedEl = $('#newsFeed');
+    const $blogTitle = $('#blogTitle');
     const $blogContent = $('#blogContent');
     const $blogBtn = $('#blogBtn');
     const $updateModal = $('#updateModal');
@@ -129,11 +130,13 @@ $(document).ready(function() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             data: JSON.stringify({
-                message: $blogContent.val().trim()
+                title: $blogTitle.val().trim(),
+                content: $blogContent.val().trim()
             })
         });
         $blogModal.modal('toggle');
 
+        $blogTitle.val('');
         $blogContent.val('');
 
         // Adding all HTML components for a blog to news feed
@@ -182,7 +185,7 @@ $(document).ready(function() {
         $blogIconEl.append($blogCommentEl, spaceEl, $blogCommentSpan);
 
         $blogContentEl.addClass('col-10 mt-3 mb-1')
-            .attr('id', 'content-' + post.id)
+            .attr('id', 'content-' + blog.id)
             .text(blog.content);
 
         $dateEl.addClass('text-muted')
