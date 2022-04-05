@@ -26,7 +26,7 @@
                     {{blog.content}}
                 </div>
                 <small>
-                    <i class="bi bi-chat" data-bs-toggle="collapse" href="#collapse-{{blog.id}}" role="button" aria-expanded="false" aria-controls="collapseExample"></i>&nbsp;<span>{{blog.comments.length}}</span>
+                    <i class="bi bi-chat" data-bs-toggle="collapse" href="#collapse-{{blog.id}}" role="button" aria-expanded="false" aria-controls="collapseExample"></i>&nbsp;<span id="count-{{blog.id}}">{{blog.comments.length}}</span>
                 </small>
                 <div class="collapse mt-2 mb-2 mx-2" id="collapse-{{blog.id}}">
                     {{#each blog.comments as |comment|}}
@@ -38,7 +38,7 @@
                                 {{#if (equals comment.creatorId ../../user.id)}}
                                     <div class="flex-shrink-0 dropdown">
                                         <i class="bi bi-three-dots" data-bs-toggle="dropdown"></i>
-                                        <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2" data-commentId={{comment.id}}>
+                                        <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2" data-commentId={{comment.id}} data-blogId={{blog.id}}>
                                             <li class="dropdown-item editComment" data-bs-toggle="modal" data-bs-target="#updateCommentModal">Edit</li>
                                             <li class="dropdown-item deleteComment">Delete</li>
                                         </ul>

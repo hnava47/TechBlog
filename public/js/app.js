@@ -6,6 +6,7 @@ $(document).ready(function() {
     const $blogContent = $('#blogContent');
     const $blogBtn = $('#blogBtn');
     const $updateModal = $('#updateModal');
+    const $updateBlogTitle = $('#updateTitle');
     const $updateBlogContent = $('#updateContent');
     const $updateBlogBtn = $('#updateBtn');
     const $successAlert = $('#successAlert');
@@ -49,6 +50,7 @@ $(document).ready(function() {
         const $currentBlogTitle = $(`#title-${$updateId}`)
         const $currentBlogContent = $(`#content-${$updateId}`);
 
+        $updateBlogTitle.val($currentBlogTitle.text().trim());
         $updateBlogContent.val($currentBlogContent.text().trim());
 
         $updateBlogBtn.on('click', async () => {
@@ -57,14 +59,16 @@ $(document).ready(function() {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 data: JSON.stringify({
-                    title: $currentBlogTitle.val().trim(),
+                    title: $updateBlogTitle.val().trim(),
                     content: $updateBlogContent.val().trim()
                 })
             });
             $updateModal.modal('toggle');
 
+            $currentBlogTitle.text(updatedBlog.title);
             $currentBlogContent.text(updatedBlog.content);
 
+            $updateBlogTitle.val('');
             $updateBlogContent.val('');
 
             hideAlerts();
@@ -79,12 +83,15 @@ $(document).ready(function() {
 
     const deleteCommentFn = async (event) => {
         const $commentId = $(event.target).parent().data('commentid');
+        const $blogId = $(event.target).parent().data('blogid');
+        const $commentCount = $(`#count-${$blogId}`);
 
         await $.ajax({
             url: `/api/comments/${$commentId}`,
             method: 'DELETE'
         });
 
+        $commentCount.text(parseInt($commentCount.text())-1);
         $(`#${$commentId}`).remove();
 
         hideAlerts();
@@ -246,7 +253,8 @@ $(document).ready(function() {
 
     // Comment functions
     $blogCommentBtn.on('click', async (event) => {
-        const $blogCommentId = $(event.target).data('id')
+        const $blogCommentId = $(event.target).data('id');
+        const $blogCommentCount = $(`#count-${$blogCommentId}`);
         const $commentMessage = $(`#input-${$blogCommentId}`);
         const $commentParent = $(`#collapse-${$blogCommentId}`);
         const $cardDiv = $('<div>');
@@ -270,6 +278,7 @@ $(document).ready(function() {
             })
         });
 
+        $blogCommentCount.text(parseInt($blogCommentCount.text())+1);
         $commentMessage.val('');
 
         $deleteLi.addClass('dropdown-item deleteComment')
