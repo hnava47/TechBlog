@@ -35,7 +35,7 @@ module.exports = {
 
             const allBlogs = allBlogsData.map(blog => blog.get({ plain: true }))
 
-            res.render('feed', {
+            res.render('home', {
                 allBlogs,
                 user: req.session.user
             });
