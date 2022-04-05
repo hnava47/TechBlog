@@ -33,7 +33,7 @@ module.exports = {
                 ]
             });
 
-            const allBlogs = allBlogsData.map(blog => blog.get({ plain: true }))
+            const allBlogs = allBlogsData.map(blog => blog.get({ plain: true }));
 
             res.render('home', {
                 allBlogs,
@@ -44,14 +44,40 @@ module.exports = {
         }
     },
     viewUserBlogs: async (req, res) => {
+        if (!req.session.loggedIn) {
+            return res.redirect('/login');
+        }
+
         try {
-            const userBlogs = await Blog.findAll({
-                where: {
-                    creatorId: req.params.userId
-                }
+            const userBlogData = await Blog.findAll({
+                include: [
+                    {
+                        model: User,
+                        attributes: ['firstName', 'lastName']
+                    },
+                    {
+                        model: Comment,
+                        include: [
+                            {
+                                model: User,
+                                attributes: ['firstName', 'lastName']
+                            }
+                        ]
+                    }
+                ],
+                where: { creatorId: req.session.user.id },
+                order: [
+                    ['updatedAt', 'DESC'],
+                    ['comments', 'updatedAt', 'DESC']
+                ]
             });
 
-            res.json(userBlogs);
+            const allBlogs = userBlogData.map(blog => blog.get({ plain: true }));
+
+            res.render('dashboard', {
+                allBlogs,
+                user: req.session.user
+            });
         } catch (error) {
             res.json(error);
         }

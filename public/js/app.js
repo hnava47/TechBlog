@@ -194,7 +194,7 @@ $(document).ready(function() {
         $blogIconEl.append($blogCommentEl, spaceEl, $blogCommentSpan);
 
         $blogContentEl.addClass('col-10 mt-3 mb-1')
-            attr('id', `content-${blog.id}`)
+            .attr('id', `content-${blog.id}`)
             .text(blog.content);
 
         $dateEl.addClass('text-muted')
