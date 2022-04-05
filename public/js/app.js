@@ -1,6 +1,6 @@
 $(document).ready(function() {
     const $logoutBtn = $('#logoutBtn');
-    const $blogModal = $('#blogtModal');
+    const $blogModal = $('#blogModal');
     const $newsFeedEl = $('#newsFeed');
     const $blogTitle = $('#blogTitle');
     const $blogContent = $('#blogContent');
@@ -31,11 +31,11 @@ $(document).ready(function() {
     const deleteBlogFn = async (event) => {
         const $blogId = $(event.target).parent().data('id');
         await $.ajax({
-            url: '/api/blogs/' + $blogId,
+            url: `/api/blogs/${$blogId}`,
             method: 'DELETE'
         });
 
-        $('#' + $blogId).remove();
+        $(`#${$blogId}`).remove();
 
         $deleteAlert.fadeIn();
 
@@ -46,17 +46,19 @@ $(document).ready(function() {
 
     const updateBlogFn = async (event) => {
         const $updateId = $(event.target).parent().data('id');
-        const $currentBlogContent = $('#content-' + $updateId);
+        const $currentBlogTitle = $(`#title-${$updateId}`)
+        const $currentBlogContent = $(`#content-${$updateId}`);
 
         $updateBlogContent.val($currentBlogContent.text().trim());
 
         $updateBlogBtn.on('click', async () => {
             const updatedBlog = await $.ajax({
-                url: '/api/blogs/' + $updateId,
+                url: `/api/blogs/${$updateId}`,
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 data: JSON.stringify({
-                    message: $updateBlogContent.val().trim()
+                    title: $currentBlogTitle.val().trim(),
+                    content: $updateBlogContent.val().trim()
                 })
             });
             $updateModal.modal('toggle');
@@ -79,11 +81,11 @@ $(document).ready(function() {
         const $commentId = $(event.target).parent().data('commentid');
 
         await $.ajax({
-            url: '/api/comments/' + $commentId,
+            url: `/api/comments/${$commentId}`,
             method: 'DELETE'
         });
 
-        $('#' + $commentId).remove();
+        $(`#${$commentId}`).remove();
 
         hideAlerts();
 
@@ -152,7 +154,7 @@ $(document).ready(function() {
 
         $commentInput.addClass('form-control rounded-pill')
             .attr({
-                'id': 'input-' + blog.id,
+                'id': `input-${blog.id}`,
                 'type': 'text',
                 'aria-label': 'Sizing example input',
                 'aria-describedby': 'inputGroup-sizing-default',
@@ -168,7 +170,7 @@ $(document).ready(function() {
             .append($personIcon, dblSpaceEl, $commentInput);
 
         $collapseDiv.addClass('collapse mt-2 mb-2 mx-2')
-            .attr('id', 'collapse-' + blog.id)
+            .attr('id', `collapse-${blog.id}`)
             .append($inputGroupDiv, $commentBtnDiv);
 
         $blogCommentSpan.text('0');
@@ -176,7 +178,7 @@ $(document).ready(function() {
         $blogCommentEl.addClass('bi bi-chat')
             .attr({
                 'data-bs-toggle': 'collapse',
-                'href': '#collapse-' + blog.id,
+                'href': `#collapse-${blog.id}`,
                 'role': 'button',
                 'aria-expanded': 'false',
                 'aria-controls': 'collapseExample'
@@ -185,11 +187,11 @@ $(document).ready(function() {
         $blogIconEl.append($blogCommentEl, spaceEl, $blogCommentSpan);
 
         $blogContentEl.addClass('col-10 mt-3 mb-1')
-            .attr('id', 'content-' + blog.id)
+            attr('id', `content-${blog.id}`)
             .text(blog.content);
 
         $dateEl.addClass('text-muted')
-            .text(moment(blog.updatedAt).format('MMMM DD') + ' at ' + moment(blog.updatedAt).format('hh:mm A'))
+            .text(`Posted by ${blog.user.firstName} ${blog.user.lastName} at ${moment(blog.updatedAt).format('MMMM DD')} ${moment(blog.updatedAt).format('hh:mm A')}`);
 
         $blogDeleteLi.addClass('dropdown-item deletePost')
             .text('Delete');
@@ -215,14 +217,15 @@ $(document).ready(function() {
             .append($blogDropdownIcon, $blogDropdownUl);
 
         $blogNameEl.addClass('mb-1')
-            .text(blog.user.firstName + ' ' + blog.user.lastName);
+            .attr('id', `title-${blog.id}`)
+            .text(blog.title);
 
         $blogDiv.addClass('d-flex w-100 align-items-center justify-content-between')
             .append($blogNameEl, $blogDropdown);
 
         $blogAnchor.attr('id', blog.id)
             .addClass('list-group-item list-group-item-action py-3 lh-tight')
-            .append($blogDiv, $dateEl, $blogMessageEl, $blogIconEl, $collapseDiv);
+            .append($blogDiv, $dateEl, $blogContentEl, $blogIconEl, $collapseDiv);
 
         $newsFeedEl.prepend($blogAnchor);
 
@@ -244,8 +247,8 @@ $(document).ready(function() {
     // Comment functions
     $blogCommentBtn.on('click', async (event) => {
         const $blogCommentId = $(event.target).data('id')
-        const $commentMessage = $("#input-" + $blogCommentId);
-        const $commentParent = $('#collapse-' + $blogCommentId);
+        const $commentMessage = $(`#input-${$blogCommentId}`);
+        const $commentParent = $(`#collapse-${$blogCommentId}`);
         const $cardDiv = $('<div>');
         const $commentDiv = $('<div>');
         const $commentNameEl = $('<strong>');
@@ -262,7 +265,7 @@ $(document).ready(function() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             data: JSON.stringify({
-                message: $commentMessage.val().trim(),
+                comment: $commentMessage.val().trim(),
                 blogId: $blogCommentId
             })
         });
@@ -293,13 +296,13 @@ $(document).ready(function() {
             .append($dotIcon, $dropdownUl);
 
         $commentNameEl.addClass('comment-sm')
-            .text(comment.user.firstName + ' ' + comment.user.lastName);
+            .text(`${comment.user.firstName} ${comment.user.lastName}`);
 
         $commentDiv.addClass('d-flex w-100 align-items-center justify-content-between')
             .append($commentNameEl, $dropdownDiv);
 
         $commentDateEl.addClass('text-muted comment-xsm')
-            .text(moment(comment.updatedAt).format('MMMM DD') + ' at ' + moment(comment.updatedAt).format('hh:mm A'));
+            .text(`${moment(comment.updatedAt).format('MMMM DD')} at ${moment(comment.updatedAt).format('hh:mm A')}`);
 
         $messageDiv.addClass('mt-2 comment-sm')
             .text(comment.comment);
