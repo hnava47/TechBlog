@@ -294,7 +294,8 @@ $(document).ready(function() {
         $dropdownUl.addClass('dropdown-menu text-small shadow')
             .attr({
                 'aria-labelledby': 'dropdownUser2',
-                'data-commentId': comment.id
+                'data-commentId': comment.id,
+                'data-blogId': comment.blogId
             })
             .append($editLi, $deleteLi);
 
