@@ -30,7 +30,7 @@ Once the user clicks the plus button, they are prompted with a modal that allows
 ![blog][blog-screenshot]
 
 You can access the updated website at the following link:
-* [Deployed Application]()
+* [Deployed Application](https://techblog-h14.herokuapp.com/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
