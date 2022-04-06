@@ -284,20 +284,13 @@ $(document).ready(function() {
         $deleteLi.addClass('dropdown-item deleteComment')
             .text('Delete');
 
-        $editLi.addClass('dropdown-item editComment')
-            .text('Edit')
-            .attr({
-                'data-bs-toggle': 'modal',
-                'data-bs-target': '#updateCommentModal'
-            });
-
         $dropdownUl.addClass('dropdown-menu text-small shadow')
             .attr({
                 'aria-labelledby': 'dropdownUser2',
                 'data-commentId': comment.id,
                 'data-blogId': comment.blogId
             })
-            .append($editLi, $deleteLi);
+            .append($deleteLi);
 
         $dotIcon.addClass('bi bi-three-dots')
             .attr('data-bs-toggle', 'dropdown');
